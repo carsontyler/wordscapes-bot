@@ -37,29 +37,29 @@ class WordscapesBot:
                 continue;
             
             loop_start_time = time.time()
-            screenshot = get_formatted_screenshot(self.word_palette_bbox)
 
-            press_button(self.level_button_loc)
+            # trying to figure out how to prevent "level" from getting captured by the screenshot
+            press_button(self.level_button_loc)          
+            time.sleep(3)        
+
+            screenshot = get_formatted_screenshot(self.word_palette_bbox)
 
             characters = ocr_characters(screenshot)
             character_list = [character for character, pos in characters]
             if len(character_list) < 6:
                 press_button            (self.piggy_close_loc)
                 time.sleep(0.75)
-                continue;
+                continue
             # Check to see if the short dictionary could complete the puzzle,
             # if not use the long dictionary instead, this cuts down time overall
             # as the majority of puzzles can be completed with the short dictionary.
             # Also use a volitile way to detect characters in order to find the
             # correct character, although this is less accurate, it stops the bot
             # from getting stuck in a loop.
-            if failed < 3:
+            if failed < 2:
                 possible_words = word_search(character_list)
                 print('Characters Detected:', character_list)
-            elif failed < 5:
-                possible_words = word_search(character_list, False)
-                print('Characters Detected:', character_list)
-            else:
+            elif failed < 3:
                 print('FAILED TOO MANY TIMES, ATTEMPTING VOLITILE CHARACTER OCR')
                 characters = ocr_characters(screenshot, True)
                 new_character_list = [character for character, pos in characters]
@@ -68,6 +68,7 @@ class WordscapesBot:
 
             # Check to see if there is a popup in the way (the ocr
             # will not return any characters) and attempt to click out of it
+
             if not possible_words and not characters:                
                 time.sleep(3)
                 press_button(self.piggy_close_loc)

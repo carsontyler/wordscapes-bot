@@ -2,6 +2,7 @@ import numpy as np
 from PIL import ImageGrab, Image, ImageDraw
 import cv2
 from sys import platform
+import os
 
 
 def screenshot(bounding_box):
@@ -14,6 +15,20 @@ def screenshot(bounding_box):
         # when finding character pos on screens
         img = img.resize((round(img.size[0] * 0.5), round(img.size[1] * 0.5)))
         img = np.array(img)
+
+    # save the screenshot so I know what it looks like
+    # save_path = '/screenshots/img.png'
+
+    # # Create the directory if it doesn't exist
+    # filename, ext = os.path.splitext(save_path)
+    # if not ext:
+    #     raise ValueError("File extension is missing in the save_path")
+
+    # # Create the directory if it doesn't exist
+    # os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+    # # Save the screenshot
+    # cv2.imwrite(save_path, cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
 
     return img
 
